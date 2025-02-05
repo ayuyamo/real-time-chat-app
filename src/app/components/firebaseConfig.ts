@@ -4,13 +4,13 @@ import { getAnalytics } from 'firebase/analytics';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDIQU_3u-_v1CDvS0sItpxJPTU1ZhdSDxE",
-    authDomain: "chat-room-1d2d4.firebaseapp.com",
-    projectId: "chat-room-1d2d4",
-    storageBucket: "chat-room-1d2d4.firebasestorage.app",
-    messagingSenderId: "766150863269",
-    appId: "1:766150863269:web:70e8c51316582aece7204c",
-    measurementId: "G-ZWH9ZEG9PF"
+    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+    measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
 const app = initializeApp(firebaseConfig);
