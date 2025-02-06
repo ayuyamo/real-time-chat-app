@@ -44,3 +44,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 - display warning if user tries to enter chat room without signing in
 - add feature to allow user to select their profile image
 - enable user to put emojis in text messages
+- adjust user view on mobile devices 
