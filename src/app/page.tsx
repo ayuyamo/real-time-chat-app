@@ -1,10 +1,9 @@
-// Import the functions you need from the SDKs you need
-'use client';
+'use client'; // use client-side code
 import { signInWithGoogle } from "./components/firebaseAuth";
 import { useAuth } from "./components/useAuth";
 
 export default function HomePage() {
-  const user = useAuth();
+  const user = useAuth(); // get the current user
 
   if (user) return <div>Loading...</div>;
 

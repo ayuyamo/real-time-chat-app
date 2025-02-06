@@ -6,29 +6,29 @@ import { useState } from "react";
 import RealTimeMessages from "../components/realTimeMessages";
 
 export default function ChatRoom() {
-    const user = useAuth();
+    const user = useAuth(); // get the current user
     const [formValue, setFormValue] = useState("");
-    if (!user) return <div>Loading...</div>;
+    if (!user) return <div>Loading...</div>; // show loading message if user is not signed in
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+        e.preventDefault(); // prevent the form from refreshing the page
         await addMessage(formValue, user.uid, user.photoURL, user.displayName);
-        setFormValue("");
+        setFormValue(""); // clear the input field
     };
 
     return (
         <div>
             <h1>Welcome to the chat room, {user.displayName}</h1>
-            <RealTimeMessages />
-            <form onSubmit={handleSubmit}>
+            <RealTimeMessages /> {/* display messages in real time */}
+            <form onSubmit={handleSubmit}> {/* form for sending messages */}
                 <input className="message-input text-black"
-                    value={formValue}
-                    onChange={(e) => setFormValue(e.target.value)}
+                    value={formValue} // bind the input value to the formValue state
+                    onChange={(e) => setFormValue(e.target.value)} // update formValue when the input changes
                     placeholder="Type a message"
                 />
                 <button type="submit">Send</button>
             </form>
-            <button onClick={signOutUser}>Sign out</button>
+            <button onClick={signOutUser}>Sign out</button> {/* sign out button */}
         </div>
     );
 }

@@ -8,17 +8,17 @@ export function useAuth() {
     const [user, setUser] = useState<any>(null);
     const router = useRouter();
 
-    useEffect(() => {
+    useEffect(() => { // set up a listener for auth state changes
         const unsubscribe = onAuthStateChanged(auth, (user) => {
-            setUser(user);
-            if (user) {
+            setUser(user); // set the user state
+            if (user) { // redirect to chat room if user is signed in
                 router.push("/chat-room");
             } else {
                 router.push("/");
             }
         });
 
-        return () => unsubscribe();
+        return () => unsubscribe(); // unsubscribe when the component unmounts
     }, []);
 
     return user;

@@ -41,3 +41,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 - deploy website & check chat app performance
 - maybe add more features like which user have read the message, time message was sent or ability to modify & delete sent messages
 - document all the code for the backend ( Halie )
+- display warning if user tries to enter chat room without signing in
+- add feature to allow user to select their profile image
+- enable user to put emojis in text messages

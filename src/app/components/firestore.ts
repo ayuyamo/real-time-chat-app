@@ -1,13 +1,13 @@
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "./firebaseConfig";
 
-export const addMessage = async (
-    message: string,
+export const addMessage = async ( // add a new message to the Firestore database
+    message: string, 
     uid: string,
     photoURL: string,
     displayName: string
 ) => {
-    try {
+    try { // add a new document with a generated ID
         const docRef = await addDoc(collection(db, "messages"), {
             message: message,
             uid: uid,
