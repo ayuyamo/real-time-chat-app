@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../lib/firebaseConfig';
-
+import { LeftChatBubble, RightChatBubble } from '../components/ChatBubble';
+import { format } from 'date-fns';
 interface RealTimeMessagesProps {
     user: any;
 }
@@ -30,8 +31,8 @@ const realTimeMessages: React.FC<RealTimeMessagesProps> = ({ user }) => { // dis
                     <div key={message.createdAt}
                         className={`flex gap-2 items-center ${message.uid === user.uid ? 'justify-end' : 'justify-start'}`}
                     >
-                        <img src={message.photoURL} alt={message.displayName} /> {/* display user photo */}
-                        <p>{message.displayName}: {message.message}</p> {/* display message */}
+                        {message.uid !== user.uid && (<LeftChatBubble name={message.displayName} message={message.message} createdAt={format(message.createdAt.toDate(), 'MMM dd, yyyy hh:mm a')} img={message.photoURL} />)} {/* display user photo */}
+                        {message.uid === user.uid && (<RightChatBubble message={message.message} createdAt={format(message.createdAt.toDate(), 'MMM dd, yyyy hh:mm a')} img={message.photoURL} />)} {/* display user photo */}
                     </div>
                 ))}
             <div ref={messagesEndRef} /> {/* ref to scroll to the bottom */}
