@@ -1,16 +1,20 @@
 'use client'; // use client-side code
-import { signInWithGoogle } from "./components/firebaseAuth";
-import { useAuth } from "./components/useAuth";
+import { useEffect, useState } from "react";
+import { auth } from "./lib/firebaseConfig";
+import { onAuthStateChanged } from "firebase/auth";
+import ChatRoom from "./pages/ChatRoom";
+import Login from "./pages/Login";
 
 export default function HomePage() {
-  const user = useAuth(); // get the current user
-
-  if (user) return <div>Loading...</div>;
+  const [user, setUser] = useState<any>(null);
+  useEffect(() => { // set up a listener for auth state changes
+    const unsubscribe = onAuthStateChanged(auth, (user) => setUser(user)); // set the user state
+    return () => unsubscribe();// unsubscribe when the component unmounts
+  }, []);
 
   return (
     <div>
-      <h1>My Firebase App</h1>
-      <button onClick={signInWithGoogle}>Sign in with Google</button>
+      {user ? (<ChatRoom user={user} />) : (<Login />)} {/* show chat room if user is signed in, otherwise show login */}
     </div>
   );
 }

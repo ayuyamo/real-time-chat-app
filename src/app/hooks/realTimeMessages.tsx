@@ -1,8 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { collection, onSnapshot } from 'firebase/firestore';
-import { db } from './firebaseConfig';
+import { db } from '../lib/firebaseConfig';
 
-const realTimeMessages = () => { // display messages in real time
+interface RealTimeMessagesProps {
+    user: any;
+}
+
+const realTimeMessages: React.FC<RealTimeMessagesProps> = ({ user }) => { // display messages in real time
     const [messages, setMessages] = useState<any[]>([]);
     const messagesEndRef = useRef<HTMLDivElement>(null);
     useEffect(() => { // set up a listener for real-time updates
@@ -19,12 +23,13 @@ const realTimeMessages = () => { // display messages in real time
         }
     }, [messages]); // re-run the effect when messages change
     return (
-        <div>
-            <h2>Messages</h2>
+        <div className='flex flex-col gap-2 flex-1 overflow-auto p-4'> {/* container for messages */}
             {messages
                 .sort((a, b) => a.createdAt - b.createdAt) // sort messages by date
                 .map((message) => ( // display each message
-                    <div key={message.createdAt}> {/* use createdAt as the key */}
+                    <div key={message.createdAt}
+                        className={`flex gap-2 items-center ${message.uid === user.uid ? 'justify-end' : 'justify-start'}`}
+                    >
                         <img src={message.photoURL} alt={message.displayName} /> {/* display user photo */}
                         <p>{message.displayName}: {message.message}</p> {/* display message */}
                     </div>

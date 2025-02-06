@@ -1,14 +1,16 @@
-'use client';
-import { useAuth } from "../components/useAuth";
-import { signOutUser } from "../components/firebaseAuth";
-import { addMessage } from "../components/firestore";
+import { signOutUser } from "../lib/firebaseAuth";
+import { addMessage } from "../lib/firestore";
 import { useState } from "react";
-import RealTimeMessages from "../components/realTimeMessages";
+import RealTimeMessages from "../hooks/realTimeMessages";
+import Loading from "./Loading";
 
-export default function ChatRoom() {
-    const user = useAuth(); // get the current user
+interface ChatRoomProps {
+    user: any;
+}
+
+const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
     const [formValue, setFormValue] = useState("");
-    if (!user) return <div>Loading...</div>; // show loading message if user is not signed in
+    if (!user) return <Loading />; // show loading message if user is not signed in
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault(); // prevent the form from refreshing the page
@@ -20,7 +22,7 @@ export default function ChatRoom() {
     return (
         <div>
             <h1>Welcome to the chat room, {user.displayName}</h1>
-            <RealTimeMessages /> {/* display messages in real time */}
+            <RealTimeMessages user={user} /> {/* display messages in real time */}
             <form onSubmit={handleSubmit}> {/* form for sending messages */}
                 <input className="message-input text-black"
                     value={formValue} // bind the input value to the formValue state
@@ -33,3 +35,5 @@ export default function ChatRoom() {
         </div>
     );
 }
+
+export default ChatRoom;
