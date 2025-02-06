@@ -12,6 +12,7 @@ export default function ChatRoom() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault(); // prevent the form from refreshing the page
+        if (!formValue.trim()) return; // don't send empty
         await addMessage(formValue, user.uid, user.photoURL, user.displayName);
         setFormValue(""); // clear the input field
     };
