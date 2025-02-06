@@ -30,7 +30,6 @@ export const RightChatBubble: React.FC<ChatBubbleProps> = ({ message, createdAt,
     return (
         <div className='flex items-start gap-2.5 justify-end'>
             {/* Image */}
-
             <div className='flex flex-col gap-1 w-full max-w-[320px] items-end'>
                 <div className='flex items-center space-x-2 rtl:space-x-reverse'>
                     <span className='text-sm font-normal text-gray-500 dark:text-gray-400'>{createdAt}</span>
