@@ -21,7 +21,7 @@ export default function ChatRoom() {
             <h1>Welcome to the chat room, {user.displayName}</h1>
             <RealTimeMessages />
             <form onSubmit={handleSubmit}>
-                <input
+                <input className="message-input text-black"
                     value={formValue}
                     onChange={(e) => setFormValue(e.target.value)}
                     placeholder="Type a message"

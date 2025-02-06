@@ -36,5 +36,8 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
 ## TODO 
-- visuals ( 1st changing the displayed text color in message box)
-- test chat room display with different users
+- visuals (nothing has been done for frontend stuff, i.e. make it so messages were on the left if they were sent by other users and on the right if sent by current logged-in user)
+- test chat room page display with different users
+- deploy website & check chat app performance
+- maybe add more features like which user have read the message, time message was sent or ability to modify & delete sent messages
+- document all the code for the backend ( Halie )
