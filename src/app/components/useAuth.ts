@@ -10,6 +10,7 @@ export function useAuth() {
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
+            console.log("User state changed. User: ", user);
             setUser(user);
             if (user) {
                 router.push("/chat-room");
@@ -19,7 +20,7 @@ export function useAuth() {
         });
 
         return () => unsubscribe();
-    }, [router]);
+    }, []);
 
     return user;
 }
