@@ -12,11 +12,11 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
     const [formValue, setFormValue] = useState("");
     if (!user) return <Loading />; // show loading message if user is not signed in
 
-    const handleImageSubmit = async (e: React.FormEvent) => {
+    const handleImageSubmit = async (e) => {
         e.preventDefault(); // prevent the form from refreshing the page
         alert("Button Clicked");
         console.log(e.target.files);
-        setFile(URL.createObjectURL(e.target.files[0]));
+        //setFile(URL.createObjectURL(e.target.files[0]));
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
