@@ -12,6 +12,13 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
     const [formValue, setFormValue] = useState("");
     if (!user) return <Loading />; // show loading message if user is not signed in
 
+    const handleImageSubmit = async (e: React.FormEvent) => {
+        e.preventDefault(); // prevent the form from refreshing the page
+        alert("Button Clicked");
+        console.log(e.target.files);
+        setFile(URL.createObjectURL(e.target.files[0]));
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault(); // prevent the form from refreshing the page
         if (!formValue.trim()) return; // don't send empty
@@ -23,6 +30,17 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
         <div>
             <h1>Welcome to the chat room, {user.displayName}</h1>
             <RealTimeMessages user={user} /> {/* display messages in real time */}
+            
+            <button type="button" onClick={handleImageSubmit}> 
+                Upload Image 
+                <input 
+                type="file" onChange={handleImageSubmit} 
+                accept="image/*"
+                style={{ display: "none" }}
+                id="contained-button-file"
+                />
+            </button>
+
             <form onSubmit={handleSubmit}> {/* form for sending messages */}
                 <input className="message-input text-black"
                     value={formValue} // bind the input value to the formValue state
