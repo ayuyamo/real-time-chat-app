@@ -8,7 +8,7 @@ import Login from "./pages/Login";
 export default function HomePage() {
   const [user, setUser] = useState<any>(null);
   useEffect(() => { // set up a listener for auth state changes
-    const unsubscribe = onAuthStateChanged(auth, (user) => setUser(user)); // set the user state
+    const unsubscribe = onAuthStateChanged(auth, (userState) => setUser(userState)); // set the user state
     return () => unsubscribe();// unsubscribe when the component unmounts
   }, []);
 
