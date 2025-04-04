@@ -19,3 +19,57 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Define the common styles for both buttons */
+.button {
+  font-weight: bold;
+  width: 150px;
+  padding: 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 30px;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth transition for transform and shadow */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Shadow for depth */
+}
+
+/* Gradient styles for buttons */
+.button-send {
+  background: linear-gradient(40deg, #4A90E2, #2F80ED);
+  color: white;
+}
+
+.button-signout {
+  background: linear-gradient(40deg, #E74C3C, #C0392B);
+  color: white;
+}
+
+/* Hover effect with scale on mouse hover */
+.button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Slightly increase the shadow for more emphasis */
+}
+
+/* Active state for button press */
+.button:active {
+  transform: scale(1);
+}
+
+/* Parent div for button container */
+.button-container {
+  display: flex;
+  gap: 20px;
+  margin-top: 10px;
+  justify-content: flex-start; /* Align buttons to the left */
+}
+
+/* Move the buttons slightly to the right by applying margin-left */
+.button-container button {
+  margin-left: 10px; /* Adjust the value to move the button more or less to the right */
+}
+
+/* Moves message box a little to the right */
+.message-input {
+  padding-left: 2px;
+  margin-left: 40px;
+  max-width: 600px;
+}

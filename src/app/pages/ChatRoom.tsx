@@ -24,14 +24,27 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
             <h1>Welcome to the chat room, {user.displayName}</h1>
             <RealTimeMessages user={user} /> {/* display messages in real time */}
             <form onSubmit={handleSubmit}> {/* form for sending messages */}
-                <input className="message-input text-black"
+                <input
+                    className="message-input text-black"
                     value={formValue} // bind the input value to the formValue state
                     onChange={(e) => setFormValue(e.target.value)} // update formValue when the input changes
                     placeholder="Type a message"
                 />
-                <button type="submit">Send</button>
+                <div className="button-container">
+                    <button 
+                        type="submit"
+                        className="button button-send"
+                    >
+                        Send
+                    </button>
+                    <button
+                        onClick={signOutUser}
+                        className="button button-signout"
+                    >
+                        Sign out
+                    </button>
+                </div>
             </form>
-            <button onClick={signOutUser}>Sign out</button> {/* sign out button */}
         </div>
     );
 }
