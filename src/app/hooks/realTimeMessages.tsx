@@ -1,43 +1,67 @@
 import { useState, useEffect, useRef } from 'react';
-import { collection, onSnapshot } from 'firebase/firestore';
+import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
 import { db } from '../lib/firebaseConfig';
-import { LeftChatBubble, RightChatBubble } from '../components/ChatBubble';
+import { LeftChatBubble, RightChatBubble } from './ChatBubble';
 import { format } from 'date-fns';
+
 interface RealTimeMessagesProps {
     user: any;
 }
 
-const realTimeMessages: React.FC<RealTimeMessagesProps> = ({ user }) => { // display messages in real time
+const RealTimeMessages: React.FC<RealTimeMessagesProps> = ({ user }) => {
     const [messages, setMessages] = useState<any[]>([]);
     const messagesEndRef = useRef<HTMLDivElement>(null);
-    useEffect(() => { // set up a listener for real-time updates
-        const unsubscribe = onSnapshot(collection(db, 'messages'), (snapshot) => {
-            const fetchedMessages = snapshot.docs.map((doc) => doc.data());
+
+    useEffect(() => {
+        const q = query(
+            collection(db, 'messages'),
+            orderBy('createdAt', 'asc')
+        );
+
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+            const fetchedMessages = snapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+                createdAt: doc.data().createdAt?.toDate?.() || null
+            }));
             setMessages(fetchedMessages);
         });
 
-        return () => unsubscribe(); // unsubscribe when the component unmounts
+        return () => unsubscribe();
     }, []);
-    useEffect(() => { // scroll to the bottom of the messages when new messages are added
-        if (messagesEndRef.current) { // check if the ref is available
-            messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
-        }
-    }, [messages]); // re-run the effect when messages change
+
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages]);
+
     return (
-        <div className='flex flex-col gap-2 flex-1 overflow-auto p-4'> {/* container for messages */}
+        <div className='flex flex-col gap-2 flex-1 overflow-auto p-4'>
             {messages
-                .sort((a, b) => a.createdAt - b.createdAt) // sort messages by date
-                .map((message) => ( // display each message
-                    <div key={message.createdAt}
+                .filter(message => message.createdAt)
+                .map((message) => (
+                    <div 
+                        key={message.id || message.createdAt?.getTime()} 
                         className={`flex gap-2 items-center ${message.uid === user.uid ? 'justify-end' : 'justify-start'}`}
                     >
-                        {message.uid !== user.uid && (<LeftChatBubble name={message.displayName} message={message.message} createdAt={format(message.createdAt.toDate(), 'MMM dd, yyyy hh:mm a')} img={message.photoURL} />)} {/* display user photo */}
-                        {message.uid === user.uid && (<RightChatBubble message={message.message} createdAt={format(message.createdAt.toDate(), 'MMM dd, yyyy hh:mm a')} img={message.photoURL} />)} {/* display user photo */}
+                        {message.uid !== user.uid ? (
+                            <LeftChatBubble 
+                                name={message.displayName} 
+                                message={message.message} 
+                                createdAt={message.createdAt ? format(message.createdAt, 'MMM dd, yyyy hh:mm a') : ''} 
+                                img={message.photoURL} 
+                            />
+                        ) : (
+                            <RightChatBubble 
+                                message={message.message} 
+                                createdAt={message.createdAt ? format(message.createdAt, 'MMM dd, yyyy hh:mm a') : ''} 
+                                img={message.photoURL} 
+                            />
+                        )}
                     </div>
                 ))}
-            <div ref={messagesEndRef} /> {/* ref to scroll to the bottom */}
+            <div ref={messagesEndRef} />
         </div>
-    )
+    );
 };
 
-export default realTimeMessages; // export the RealTimeMessages component
+export default RealTimeMessages;
