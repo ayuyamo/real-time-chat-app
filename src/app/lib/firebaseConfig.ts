@@ -2,6 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getAnalytics } from 'firebase/analytics';
 import { getFirestore } from 'firebase/firestore';
+import { getDatabase } from 'firebase/database'; // Import the Realtime Database service
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDIQU_3u-_v1CDvS0sItpxJPTU1ZhdSDxE',
@@ -16,6 +17,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig); // initialize Firebase
 const auth = getAuth(app); // get the Firebase Auth service
 const db = getFirestore(app); // get the Firestore service
+const realTimeDb = getDatabase(app); // get the Realtime Database service
 
 let analytics;
 if (typeof window !== 'undefined') {
@@ -23,4 +25,4 @@ if (typeof window !== 'undefined') {
   analytics = getAnalytics(app); // get the Firebase Analytics service
 }
 
-export { auth, analytics, db };
+export { auth, analytics, db, realTimeDb };
