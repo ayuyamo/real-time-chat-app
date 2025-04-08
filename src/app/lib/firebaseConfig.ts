@@ -3,6 +3,7 @@ import { getAuth } from 'firebase/auth';
 import { getAnalytics } from 'firebase/analytics';
 import { getFirestore } from 'firebase/firestore';
 import { getDatabase } from 'firebase/database'; // Import the Realtime Database service
+import { da } from 'date-fns/locale';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDIQU_3u-_v1CDvS0sItpxJPTU1ZhdSDxE',
@@ -12,6 +13,7 @@ const firebaseConfig = {
   messagingSenderId: '766150863269',
   appId: '1:766150863269:web:a6f080a25fcf4ab3e7204c',
   measurementId: 'G-7WYY0MVV5F',
+  databaseURL: 'https://chat-room-1d2d4-default-rtdb.firebaseio.com/', // Add your Realtime Database URL
 };
 
 const app = initializeApp(firebaseConfig); // initialize Firebase
