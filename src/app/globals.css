@@ -23,7 +23,7 @@ body {
 /* Define the common styles for both buttons */
 .button {
   font-weight: bold;
-  width: 150px;
+  width: 100px;
   padding: 12px;
   border: none;
   cursor: pointer;
