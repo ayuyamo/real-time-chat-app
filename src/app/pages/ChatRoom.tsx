@@ -10,7 +10,6 @@ import RealTimeMessages from '../hooks/realTimeMessages';
 
 interface ChatRoomProps {
   user: any;  // User object passed as a prop
-  chatId: string;  // Chat ID passed as a prop
 }
 
 const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
