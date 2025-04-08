@@ -88,7 +88,6 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
                 </div>
                 {/* </div> */}
             </form >
-            <button onClick={signOutUser}>Sign out</button> {/* Sign out button */}
         </div>
     );
 };
