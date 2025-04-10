@@ -75,8 +75,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
                 <p>{usersTyping.join(", ")} {usersTyping.length === 1 ? "is" : "are"} typing ...</p>
             )}
             <div>
-                <button>
-                    onClick={()=>setButtonImagePopUp(true)}
+                <button onClick={()=>setButtonImagePopUp(true)}>
                     Image
                 </button>
             </div>
@@ -100,7 +99,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
                 </div>
                 {/* </div> */}
             </form >
-            <ImageUploadPopUp trigger={(buttonImagePopUp)} setTrigger={setButtonImagePopUp}>
+            <ImageUploadPopUp trigger={(buttonImagePopUp)}>
                 Upload Image Here
                 <input type="file" name='file' onChange={handleImage}/>
                 <button>Submit</button>
