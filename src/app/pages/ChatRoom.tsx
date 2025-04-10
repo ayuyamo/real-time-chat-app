@@ -7,6 +7,7 @@ import { setTypingStatus, listenToTyping } from '../lib/typingIndicatorService';
 import Loading from './Loading';
 import { useRef } from 'react';
 import RealTimeMessages from '../hooks/realTimeMessages';
+import ImageUploadPopUp from '../components/ImageUploadPopUp';
 
 interface ChatRoomProps {
     user: any;  // User object passed as a prop
@@ -16,6 +17,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
     const [formValue, setFormValue] = useState<string>('');  // State for message input
     const [isTyping, setIsTyping] = useState<boolean>(false);  // State to track typing status
     const [usersTyping, setUsersTyping] = useState<string[]>([]);  // State to track users typing
+    const [buttonImagePopUp, setButtonImagePopUp] = useState(false); // State to enable or disable the image upload popup
 
     const timeoutRef = useRef<NodeJS.Timeout | null>(null); // Ref to store the timeout ID
 
@@ -25,6 +27,10 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
         timeoutRef.current = setTimeout(() => {
             setTypingStatus(roomId, username, false);
         }, 1000); // 1 sec after last keypress
+    }
+
+    function handleImage() {
+
     }
 
     useEffect(() => {
@@ -68,6 +74,12 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
             {usersTyping.length > 0 && (
                 <p>{usersTyping.join(", ")} {usersTyping.length === 1 ? "is" : "are"} typing ...</p>
             )}
+            <div>
+                <button>
+                    onClick={()=>setButtonImagePopUp(true)}
+                    Image
+                </button>
+            </div>
             <form onSubmit={handleSubmit} className='flex p-4 gap-4 justify-between items-center'> {/* form for sending messages */}
                 <div className="relative flex-1">
                     <input className="block w-full p-4 ps-10 text-sm focus:ring-0 focus:outline-none text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
@@ -88,6 +100,11 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
                 </div>
                 {/* </div> */}
             </form >
+            <ImageUploadPopUp trigger={(buttonImagePopUp)} setTrigger={setButtonImagePopUp}>
+                Upload Image Here
+                <input type="file" name='file' onChange={handleImage}/>
+                <button>Submit</button>
+            </ImageUploadPopUp>
         </div>
     );
 };
