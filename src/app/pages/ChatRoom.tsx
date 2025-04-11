@@ -2,11 +2,11 @@
 import { useState, useEffect, ChangeEvent, FormEvent, use } from 'react';
 import { signOutUser } from "../lib/firebaseAuth"; // Importing signOutUser function (correct path)
 import { addMessage } from "../lib/firestore"; // Importing addMessage function (correct path)
-// import TypingIndicator from '../components/TypingIndicator';  // Import TypingIndicator component (adjust the relative path)
 import { setTypingStatus, listenToTyping } from '../lib/typingIndicatorService'; // Import functions directly
 import Loading from './Loading';
 import { useRef } from 'react';
 import RealTimeMessages from '../hooks/realTimeMessages';
+import { TypingBubble } from '../components/TypingBubble';
 
 interface ChatRoomProps {
     user: any;  // User object passed as a prop
@@ -14,16 +14,16 @@ interface ChatRoomProps {
 
 const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
     const [formValue, setFormValue] = useState<string>('');  // State for message input
-    const [usersTyping, setUsersTyping] = useState<string[]>([]);  // State to track users typing
+    const [usersTyping, setUsersTyping] = useState<{ username: string; photoURL: string }[]>([]);  // State to track users typing
     const messagesEndRef = useRef<HTMLDivElement>(null);
-
+    const [userTypingPhotos, setUserTypingPhotos] = useState<string[]>([]); // State to store user photos
     const timeoutRef = useRef<NodeJS.Timeout | null>(null); // Ref to store the timeout ID
 
-    function onInputChange(roomId: string, username: string) {
-        setTypingStatus(roomId, username, true);
+    function onInputChange(roomId: string, user: any) {
+        setTypingStatus(roomId, user.displayName, user.uid, user.photoURL, true);
         clearTimeout(timeoutRef.current ?? undefined); // Clear previous timeout
         timeoutRef.current = setTimeout(() => {
-            setTypingStatus(roomId, username, false);
+            setTypingStatus(roomId, user.displayName, user.uid, user.photoURL, false);
         }, 1000); // 1 sec after last keypress
     }
 
@@ -37,18 +37,28 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
 
         await addMessage(formValue, user.uid, user.photoURL, user.displayName); // Send the message
         setFormValue(""); // Clear the input
-        setTypingStatus("room123", user.uid, false); // Notify stopped typing
+        setTypingStatus("room123", user.displayName, user.uid, user.photoURL, false); // Notify stopped typing
     };
 
     // Scroll to the bottom when usersTyping or messages change
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        if (!usersTyping.length ||
+            (usersTyping.length === 1 && usersTyping[0].username === user.displayName) // If only the current user is typing, don't show the typing bubble
+        ) {
+            setUserTypingPhotos([]); // Clear photos if no users are typing
+            return;
+        }
+        setUserTypingPhotos(usersTyping.map((user) => user.photoURL)); // Get the photos of users typing
     }, [usersTyping]);
 
     const handleTyping = (e: ChangeEvent<HTMLInputElement>) => {
         setFormValue(e.target.value); // Update form value as the user types
-        onInputChange("room123", user.displayName); // Call the typing status function
+        onInputChange("room123", user); // Call the typing status function
+        console.log('current users typing: ', usersTyping); // Log the users typing
+        console.log('current user typing photos: ', userTypingPhotos); // Log the user typing photos
     };
+
 
     if (!user) return <Loading />; // Show loading if user is not logged in
 
@@ -67,14 +77,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
                 {/* Messages will be displayed here */}
                 <RealTimeMessages user={user} /> {/* Display real-time messages */}
                 <div ref={messagesEndRef}></div>
-                {usersTyping.filter((username) => username !== user.displayName).length > 0 && (
-                    <p>
-                        {usersTyping
-                            .filter((username) => username !== user.displayName)
-                            .join(", ")}{" "}
-                        {usersTyping.filter((username) => username !== user.displayName).length === 1 ? "is" : "are"} typing ...
-                    </p>
-                )}
+                {userTypingPhotos.length > 0 && <TypingBubble img={userTypingPhotos} />} {/* Typing bubble for the current user */}
                 <form onSubmit={handleSubmit} className='fixed bottom-0 left-0 w-full flex p-4 gap-4 justify-center items-center pl-10 pr-10'> {/* form for sending messages */}
                     <input className="block w-[1000px] p-4 ps-10 text-sm focus:ring-0 focus:outline-none text-gray-900 rounded-full bg-gray-50 dark:bg-gray-700 dark:placeholder-gray-400 dark:text-white"
                         value={formValue}
