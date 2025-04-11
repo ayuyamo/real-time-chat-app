@@ -14,8 +14,8 @@ interface ChatRoomProps {
 
 const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
     const [formValue, setFormValue] = useState<string>('');  // State for message input
-    const [isTyping, setIsTyping] = useState<boolean>(false);  // State to track typing status
     const [usersTyping, setUsersTyping] = useState<string[]>([]);  // State to track users typing
+    const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const timeoutRef = useRef<NodeJS.Timeout | null>(null); // Ref to store the timeout ID
 
@@ -30,18 +30,6 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
     useEffect(() => {
         listenToTyping("room123", setUsersTyping); // Listen to typing status changes
     }, []); // Empty dependency array to run once on mount  });
-    useEffect(() => {
-        if (!user) return;
-
-        // Set typing status when the user starts typing
-        const typingTimeout = setTimeout(() => {
-            if (isTyping) {
-                setTypingStatus("room123", user.uid, true); // Notify typing status to Firebase
-            }
-        }, 500); // Wait for 500ms after typing starts
-
-        return () => clearTimeout(typingTimeout); // Cleanup when typing stops or component unmounts
-    }, [isTyping, user, "room123"]);
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -52,9 +40,13 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
         setTypingStatus("room123", user.uid, false); // Notify stopped typing
     };
 
+    // Scroll to the bottom when usersTyping or messages change
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [usersTyping]);
+
     const handleTyping = (e: ChangeEvent<HTMLInputElement>) => {
         setFormValue(e.target.value); // Update form value as the user types
-        // setIsTyping(true); // Set typing status to true
         onInputChange("room123", user.displayName); // Call the typing status function
     };
 
@@ -65,8 +57,14 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
             <h1>Welcome to the chat room, {user.displayName}</h1>
             <RealTimeMessages user={user} /> {/* Display real-time messages */}
             {/* <TypingIndicator chatId={chatId} /> */}
-            {usersTyping.length > 0 && (
-                <p>{usersTyping.join(", ")} {usersTyping.length === 1 ? "is" : "are"} typing ...</p>
+            <div ref={messagesEndRef}></div>
+            {usersTyping.filter((username) => username !== user.displayName).length > 0 && (
+                <p>
+                    {usersTyping
+                        .filter((username) => username !== user.displayName)
+                        .join(", ")}{" "}
+                    {usersTyping.filter((username) => username !== user.displayName).length === 1 ? "is" : "are"} typing ...
+                </p>
             )}
             <form onSubmit={handleSubmit} className='flex p-4 gap-4 justify-between items-center'> {/* form for sending messages */}
                 <div className="relative flex-1">
@@ -86,7 +84,6 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
                         Sign out
                     </button>
                 </div>
-                {/* </div> */}
             </form >
         </div>
     );
