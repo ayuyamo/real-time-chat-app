@@ -73,3 +73,32 @@ body {
   margin-left: 40px;
   max-width: 600px;
 }
+
+/* changes for the UI */
+.gradient-background {
+  background: linear-gradient(300deg, #03001e, #7303c0, #ec38bc, #fdeff9);
+  background-size: 180% 180%;
+  animation: gradient-animation 18s ease infinite;
+}
+
+@keyframes gradient-animation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 1.5s ease-in-out;
+}
