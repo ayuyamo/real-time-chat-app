@@ -39,7 +39,7 @@ body {
 }
 
 .button-signout {
-  background: linear-gradient(40deg, #E74C3C, #C0392B);
+  /* background: linear-gradient(40deg, #E74C3C, #C0392B); */
   color: white;
 }
 
