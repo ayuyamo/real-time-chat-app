@@ -47,7 +47,11 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
             setUserTypingPhotos([]); // Clear photos if no users are typing
             return;
         }
-        setUserTypingPhotos(usersTyping.map((user) => user.photoURL)); // Get the photos of users typing
+        setUserTypingPhotos(
+            usersTyping
+                .filter((u) => u.username !== user.displayName) // exclude current user
+                .map((u) => u.photoURL) // map to just photo URLs
+        );
     }, [usersTyping]);
 
     const handleTyping = (e: ChangeEvent<HTMLInputElement>) => {
