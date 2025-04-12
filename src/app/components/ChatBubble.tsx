@@ -17,7 +17,7 @@ export const LeftChatBubble: React.FC<ChatBubbleProps> = ({ name, message, creat
                     <span className='text-sm font-normal text-gray-500 dark:text-gray-400'>{createdAt}</span>
                 </div>
                 {/* Message */}
-                <div className='inline-flex flex-col leading-1.5 p-4 rounded-e-xl rounded-es-xl rounded-tl-xl rounded-bl-xl rounded-br-xl bg-white/10 backdrop-blur-md border border-white/20 shadow-lg shadow-black/10' style={{ width: 'fit-content' }}>
+                <div className='inline-flex flex-col leading-1.5 p-4 rounded-e-xl rounded-es-xl rounded-bl-xl rounded-br-xl bg-white/10 backdrop-blur-md border border-white/20 shadow-lg shadow-black/10' style={{ width: 'fit-content' }}>
                     <p className='text-sm font-normal text-gray-900 dark:text-white break-words '>{message}</p>
                 </div>
             </div>
