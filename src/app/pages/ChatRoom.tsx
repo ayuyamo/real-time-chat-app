@@ -15,7 +15,6 @@ interface ChatRoomProps {
 const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
     const [formValue, setFormValue] = useState<string>('');  // State for message input
     const [usersTyping, setUsersTyping] = useState<{ username: string; photoURL: string }[]>([]);  // State to track users typing
-    const messagesEndRef = useRef<HTMLDivElement>(null);
     const [userTypingPhotos, setUserTypingPhotos] = useState<string[]>([]); // State to store user photos
     const timeoutRef = useRef<NodeJS.Timeout | null>(null); // Ref to store the timeout ID
 
@@ -42,7 +41,6 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
 
     // Scroll to the bottom when usersTyping or messages change
     useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
         if (!usersTyping.length ||
             (usersTyping.length === 1 && usersTyping[0].username === user.displayName) // If only the current user is typing, don't show the typing bubble
         ) {
@@ -68,7 +66,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
                 <h1 className="text-xl font-bold pl-4">Welcome to the chat room, {user.displayName}!</h1>
                 <button
                     onClick={signOutUser}
-                    className="rounded-full text-small text-white hover:scale-110 transition duration-300 bg-gradient-to-r from-purple-500 to-pink-500 animate-gradient shadow-md shadow-gray-900/2 focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium text-sm px-5 py-2.5 text-center"
+                    className="rounded-full text-small text-white hover:scale-110 transition duration-300 bg-gradient-to-r from-purple-600 to-pink-500 animate-gradient shadow-md hover:shadow-gray-700/50 focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium text-sm px-5 py-2.5 text-center"
                 >
                     Sign out
                 </button>
@@ -77,16 +75,16 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
                 {/* Messages will be displayed here */}
                 <RealTimeMessages user={user} /> {/* Display real-time messages */}
                 {userTypingPhotos.length > 0 && <TypingBubble img={userTypingPhotos} />} {/* Typing bubble for the current user */}
-                <form onSubmit={handleSubmit} className='fixed bottom-0 left-0 w-full flex p-4 gap-4 justify-center items-center pl-10 pr-10'> {/* form for sending messages */}
-                    <input className="block w-[1000px] p-4 ps-10 text-sm focus:ring-0 focus:outline-none text-gray-900 rounded-full bg-gray-50 dark:bg-gray-700 dark:placeholder-gray-400 dark:text-white"
-                        value={formValue}
-                        onChange={handleTyping} // update formValue when the input changes
-                        placeholder="Type Message..." />
-                    <button type="submit" className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 opacity-0">
-                        Send
-                    </button>
-                </form >
             </div>
+            <form onSubmit={handleSubmit} className='fixed bottom-0 left-0 w-full flex p-4 gap-4 justify-center items-center pl-10 pr-10'> {/* form for sending messages */}
+                <input className="block w-[1000px] p-4 ps-10 text-sm focus:ring-0 focus:outline-none text-gray-900 rounded-full bg-gray-50 dark:bg-gray-700 dark:placeholder-gray-400 dark:text-white"
+                    value={formValue}
+                    onChange={handleTyping} // update formValue when the input changes
+                    placeholder="Type Message..." />
+                <button type="submit" className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 opacity-0">
+                    Send
+                </button>
+            </form >
         </div>
     );
 };
