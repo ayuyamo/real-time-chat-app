@@ -17,7 +17,7 @@ export const LeftChatBubble: React.FC<ChatBubbleProps> = ({ name, message, creat
                     <span className='text-sm font-normal text-gray-500 dark:text-gray-400'>{createdAt}</span>
                 </div>
                 {/* Message */}
-                <div className='inline-flex flex-col animate-gradient leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700 bg-gradient-to-r from-fuchsia-500 to-violet-500' style={{ width: 'fit-content' }}>
+                <div className='inline-flex flex-col leading-1.5 p-4 rounded-e-xl rounded-es-xl rounded-tl-xl rounded-bl-xl rounded-br-xl bg-white/10 backdrop-blur-md border border-white/20 shadow-lg shadow-black/10' style={{ width: 'fit-content' }}>
                     <p className='text-sm font-normal text-gray-900 dark:text-white break-words '>{message}</p>
                 </div>
             </div>
@@ -34,7 +34,7 @@ export const RightChatBubble: React.FC<ChatBubbleProps> = ({ message, createdAt,
                 <div className='flex items-center space-x-2 rtl:space-x-reverse'>
                     <span className='text-sm font-normal text-gray-500 dark:text-gray-400'>{createdAt}</span>
                 </div>
-                <div className='flex flex-col leading-1.5 p-4 animate-gradient border-gray-200 bg-blue-400 text-white rounded-tl-xl rounded-bl-xl rounded-br-xl bg-gradient-to-r from-violet-500 to-fuchsia-500' style={{ width: 'fit-content' }}>
+                <div className='flex flex-col leading-1.5 p-4 text-white rounded-tl-xl rounded-bl-xl rounded-br-xl bg-white/10 backdrop-blur-md border border-white/20 shadow-lg shadow-black/10' style={{ width: 'fit-content' }}>
                     <p className='text-sm font-normal text-right'>{message}</p>
                 </div>
             </div>

@@ -86,7 +86,6 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
                         Send
                     </button>
                 </form >
-                <div ref={messagesEndRef}></div>
             </div>
         </div>
     );
