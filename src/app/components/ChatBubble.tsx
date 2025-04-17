@@ -50,6 +50,8 @@ interface ChatBubbleProps {
     createdAt: string;
     img: string;
     imageUrl?: string; // optional image URL
+    firstPersonSeen: string;
+    numPeopleSeen: Number;
 }
 
 export const LeftChatBubble: React.FC<ChatBubbleProps> = ({ name, message, createdAt, img, imageUrl }) => {
@@ -78,7 +80,7 @@ export const LeftChatBubble: React.FC<ChatBubbleProps> = ({ name, message, creat
     );
 }
 
-export const RightChatBubble: React.FC<ChatBubbleProps> = ({ message, createdAt, img, imageUrl }) => {
+export const RightChatBubble: React.FC<ChatBubbleProps> = ({ message, createdAt, img, imageUrl, firstPersonSeen, numPeopleSeen }) => {
     return (
         <div className='flex items-start gap-2.5 justify-end'>
             {/* Image */}
@@ -96,6 +98,8 @@ export const RightChatBubble: React.FC<ChatBubbleProps> = ({ message, createdAt,
                         />
                     )}
                 </div>
+                
+                <span className='text-sm font-normal'>{firstPersonSeen + " + " + numPeopleSeen + " other seen"}</span>
             </div>
             <img className='w-8 h-8 rounded-full ml-2' src={img} alt='User image' />
         </div>
