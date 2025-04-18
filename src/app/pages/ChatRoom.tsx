@@ -15,7 +15,7 @@ interface ChatRoomProps {
 const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
     const [formValue, setFormValue] = useState<string>('');  // State for message input
     const [image, setImage] = useState<File | null>(null); // State for selected image
-    const [usersTyping, setUsersTyping] = useState<{ username: string; photoURL: string }[]>([]);  // State to track users typing
+    const [usersTyping, setUsersTyping] = useState<{ username: string; uid: string; photoURL: string }[]>([]);  // State to track users typing
     const [userTypingPhotos, setUserTypingPhotos] = useState<string[]>([]); // State to store user photos
     const fileInputRef = useRef<HTMLInputElement | null>(null); // Ref to trigger hidden file input
     const timeoutRef = useRef<NodeJS.Timeout | null>(null); // Ref to store the timeout ID
@@ -56,14 +56,14 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
     // Scroll to the bottom when usersTyping or messages change
     useEffect(() => {
         if (!usersTyping.length ||
-            (usersTyping.length === 1 && usersTyping[0].username === user.displayName) // If only the current user is typing, don't show the typing bubble
+            (usersTyping.length === 1 && usersTyping[0].uid === user.uid) // If only the current user is typing, don't show the typing bubble
         ) {
             setUserTypingPhotos([]); // Clear photos if no users are typing
             return;
         }
         setUserTypingPhotos(
             usersTyping
-                .filter((u) => u.username !== user.displayName) // exclude current user
+                .filter((u) => u.uid !== user.uid) // exclude current user
                 .map((u) => u.photoURL) // map to just photo URLs
         );
     }, [usersTyping]);

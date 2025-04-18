@@ -3,6 +3,7 @@ import { onValue, ref, set, get } from 'firebase/database'; // Import necessary 
 
 type TypingEntry = {
   isTyping: boolean;
+  uid: string;
   photoURL?: string;
 };
 
@@ -24,7 +25,9 @@ export function setTypingStatus(
 
 export function listenToTyping(
   roomId: string,
-  callback: (usersTyping: { username: string; photoURL: string }[]) => void
+  callback: (
+    usersTyping: { username: string; uid: string; photoURL: string }[]
+  ) => void
 ) {
   const roomTypingRef = ref(realTimeDb, `typingStatus/${roomId}`);
 
@@ -34,6 +37,7 @@ export function listenToTyping(
       .filter(([_, value]) => value?.isTyping)
       .map(([username, value]) => ({
         username,
+        uid: value.uid,
         photoURL: value.photoURL || '/default-avatar.png',
       })); // Default avatar if no photoUrl is provided
     console.log('users typing: ', usersTyping); // Log the users typing
