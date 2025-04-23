@@ -7,7 +7,7 @@ type TypingEntry = {
   photoURL?: string;
 };
 
-export function setTypingStatus(
+export function setTypingStatus( // called when current user's typing status changes
   roomId: string,
   username: string,
   userId: string,
@@ -23,7 +23,7 @@ export function setTypingStatus(
   console.log('current data: ', typingRef); // Log the current data
 }
 
-export function listenToTyping(
+export function listenToTyping( // set up listener for any changes made to real time database
   roomId: string,
   callback: (
     usersTyping: { username: string; uid: string; photoURL: string }[]
@@ -32,6 +32,7 @@ export function listenToTyping(
   const roomTypingRef = ref(realTimeDb, `typingStatus/${roomId}`);
 
   onValue(roomTypingRef, (snapshot) => {
+    // if changes recognized, fetch data
     const data = (snapshot.val() as Record<string, TypingEntry>) || {};
     const usersTyping = Object.entries(data)
       .filter(([_, value]) => value?.isTyping)
