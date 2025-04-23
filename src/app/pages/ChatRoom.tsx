@@ -20,6 +20,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
     const fileInputRef = useRef<HTMLInputElement | null>(null); // Ref to trigger hidden file input
     const timeoutRef = useRef<NodeJS.Timeout | null>(null); // Ref to store the timeout ID
 
+    // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ called whenever *current* user is/is not typing
     function onInputChange(roomId: string, user: any) {
         setTypingStatus(roomId, user.displayName, user.uid, user.photoURL, true);
         clearTimeout(timeoutRef.current ?? undefined); // Clear previous timeout
@@ -28,6 +29,8 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
         }, 1000); // 1 sec after last keypress
     }
 
+    // $$$$$$$$$$$$$$$$$$$$$ setting up a listener for any changes to realtime database 
+    // if there are changes, then it fetches array of objects and store in usersTyping
     useEffect(() => {
         listenToTyping("room123", setUsersTyping); // Listen to typing status changes
     }, []); // Empty dependency array to run once on mount  });
@@ -54,6 +57,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ user }) => {
     };
 
     // Scroll to the bottom when usersTyping or messages change
+    // $$$$$$$$$$$$$$$$$$$$$ filters out yourself in current users typing
     useEffect(() => {
         if (!usersTyping.length ||
             (usersTyping.length === 1 && usersTyping[0].uid === user.uid) // If only the current user is typing, don't show the typing bubble
